@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 // };
 
 function Home() {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
+  // const theme = useTheme();
+  // const matches = useMediaQuery(theme.breakpoints.up("lg"));
   return (
     <div>
       <Box
@@ -21,8 +21,9 @@ function Home() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "gray",
+          marginTop: "30px",
+          // justifyContent: "center",
+          backgroundColor: "smokewhite",
         }}
       >
         <Grid
@@ -30,13 +31,21 @@ function Home() {
           spacing={2}
           sx={{
             width: "90%",
-            flexDirection: matches ? "row" : "column",
+            // flexDirection: matches ? "row" : "column",
           }}
+          // sm
+          // xl
+          // md
+          // lg
         >
           {weeks.map((week) => (
             <Grid
               item
-              xs={4}
+              xs={12}
+              sm={6}
+              md={4}
+              // md={matches : 4}
+              // xs={4}
               key={week.name}
               sx={{
                 display: "flex",
@@ -55,7 +64,10 @@ function Home() {
                   alignItems: "center",
                 }}
               >
-                <Link to={`/week/${week.id}`}>
+                <Link
+                  style={{ color: "black", textDecoration: "none" }}
+                  to={`/week/${week.id}`}
+                >
                   <Box>{week.name}</Box>
                   <Box>{week.list}</Box>
                 </Link>

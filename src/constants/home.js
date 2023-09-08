@@ -16,9 +16,11 @@ export const weeks = [
 ];
 
 export const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fffff",
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
   color: theme.palette.text.secondary,
+  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.7)',
+
 }));

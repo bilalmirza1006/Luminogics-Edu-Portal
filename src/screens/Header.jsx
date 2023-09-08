@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Link } from "react-router-dom";
 // import { MenuIcon } from "@mui/icons-material/Menu";
 // import ManuIcon from @mui
 
@@ -27,7 +28,13 @@ function Header() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              News
+              <Link
+                style={{ color: "#FFF", textDecoration: "none" }}
+                // sx={{ color: "#FFF", textDecoration: "none" }}
+                to={"/"}
+              >
+                Header
+              </Link>
             </Typography>
             <Button color="inherit">Login</Button>
           </Toolbar>
