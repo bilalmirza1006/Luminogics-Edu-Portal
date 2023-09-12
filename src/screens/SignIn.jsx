@@ -16,7 +16,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState("true");
@@ -26,6 +26,9 @@ function SignIn() {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
   const handleClickShowPassword = () => setShowPassword(!showPassword);
+
+  //  const theme = useTheme();
+  // const matches = useMediaQuery(theme.breakpoints.up("lg"));
   const handelEmail = (event) => {
     setEmail(event.target.value);
   };
@@ -35,7 +38,7 @@ function SignIn() {
 
   const handelApi = () => {
     console.log("signin", email, password);
-    navigate("/");
+    // navigate("/");
     axios
       .post("http://localhost:6464/api/login", {
         // name: name,
@@ -48,7 +51,7 @@ function SignIn() {
         }
         console.log(response);
         navigate("/");
-        alert("submitted");
+        // alert("submitted");
       })
       .catch((error) => {
         alert(error);
@@ -64,6 +67,9 @@ function SignIn() {
     justifyContent: "center",
     alignItems: "center",
     height: matches ? "80vh" : "70vh",
+    border: "2px solid black",
+    width: matches ? "50%" : "80%",
+    borderRadius: "20px",
   };
 
   return (
@@ -75,25 +81,35 @@ function SignIn() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "gray",
+          // backgroundColor: "gray",
+          background: "linear-gradient(to right bottom,  #525252, #3d72b4)",
+          // background: l("to bottom, red, blue"),
+          // backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fffff",
+          // textShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+          // boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.7)",
         }}
       >
         {/* <Grid sx={{ width: "40%" }}> */}
         <Grid item xs={12} sm={6} sx={leftSideStyle}>
           <div
             style={{
-              width: "90%",
+              width: "80%",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
+              // border: "2px solid black",
             }}
           >
-            <Typography variant="h3" color="black" mb={2}>
+            <Typography variant={matches ? "h3" : "h6"} color="black" mb={2}>
               Signin
             </Typography>
+
             <TextField
-              sx={{ width: "100%" }}
+              sx={{
+                width: "100%",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+              }}
               id="filled-basic"
               label="Email"
               variant="filled"
@@ -105,6 +121,7 @@ function SignIn() {
               sx={{
                 m: 2,
                 width: "100%",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
               }}
               id="outlined-password-input"
               label="Password"
@@ -131,7 +148,11 @@ function SignIn() {
               }}
             />
             <Button
-              sx={{ width: "100%", height: "50px" }}
+              sx={{
+                width: "100%",
+                height: "50px",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+              }}
               variant="contained"
               disableElevation
               mb={2}
@@ -142,14 +163,17 @@ function SignIn() {
 
             <Box
               sx={{
-                display: "block",
+                display: "flex",
                 p: 2,
               }}
             >
-              {/* <Link to={"/signup"}> Signup.</Link> */}
+              <Box>
+                <Typography>If you don't have an account, please:</Typography>
+              </Box>
+              <Link to={"/sign-up"}> Signup.</Link>
             </Box>
 
-            <Typography variant="body2">or sign in with</Typography>
+            <Typography>or sign in with</Typography>
             <Box
               sx={{
                 display: "flex",

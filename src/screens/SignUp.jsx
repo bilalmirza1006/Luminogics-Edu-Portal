@@ -16,6 +16,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState("true");
@@ -35,6 +36,7 @@ function SignUp() {
   const handelPassword = (event) => {
     setPassword(event.target.value);
   };
+  const navigate = useNavigate();
 
   const handelApi = () => {
     console.log("signup", name, email, password);
@@ -49,7 +51,7 @@ function SignUp() {
           throw new Error("USER NOT FOUND");
         }
         console.log(response);
-
+        navigate("/sign-in");
         alert("submitted");
       })
       .catch((error) => {
@@ -66,6 +68,9 @@ function SignUp() {
     justifyContent: "center",
     alignItems: "center",
     height: matches ? "80vh" : "70vh",
+    border: "2px solid black",
+    width: matches ? "50%" : "80%",
+    borderRadius: "20px",
   };
 
   return (
@@ -77,7 +82,7 @@ function SignUp() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "gray",
+          background: "linear-gradient(to right bottom,  #525252, #3d72b4)",
         }}
       >
         {/* <Grid sx={{ width: "40%" }}> */}
@@ -91,11 +96,15 @@ function SignUp() {
               alignItems: "center",
             }}
           >
-            <Typography variant="h3" color="black" mb={2}>
+            <Typography variant={matches ? "h3" : "h6"} color="black" mb={2}>
               SignUp
             </Typography>
             <TextField
-              sx={{ width: "100%", marginBottom: "15px" }}
+              sx={{
+                width: "100%",
+                marginBottom: "15px",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+              }}
               id="filled-basic"
               label="Name"
               variant="filled"
@@ -104,7 +113,10 @@ function SignUp() {
               onChange={handelName}
             />
             <TextField
-              sx={{ width: "100%" }}
+              sx={{
+                width: "100%",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+              }}
               id="filled-basic"
               label="Email"
               variant="filled"
@@ -116,6 +128,7 @@ function SignUp() {
               sx={{
                 m: 2,
                 width: "100%",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
               }}
               id="outlined-password-input"
               label="Password"
@@ -142,7 +155,11 @@ function SignUp() {
               }}
             />
             <Button
-              sx={{ width: "100%", height: "50px" }}
+              sx={{
+                width: "100%",
+                height: "50px",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+              }}
               variant="contained"
               disableElevation
               mb={2}
@@ -153,14 +170,17 @@ function SignUp() {
 
             <Box
               sx={{
-                display: "block",
+                display: "flex",
                 p: 2,
               }}
             >
-              {/* <Link to={"/signup"}> Signup.</Link> */}
+              <Box>
+                <Typography>Already have an account?</Typography>
+              </Box>
+              <Link to={"/sign-in"}> SignIn.</Link>
             </Box>
 
-            <Typography variant="body2">or sign in with</Typography>
+            <Typography>or signUp with</Typography>
             <Box
               sx={{
                 display: "flex",

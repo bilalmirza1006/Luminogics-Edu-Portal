@@ -52,12 +52,12 @@ function App() {
       )}
 
       <List>
-        {weeks.map((arr) => (
+        {array.map((arr, index) => (
           <ListItem
-            key={arr.id}
+            key={index}
             disablePadding
-            onClick={() => handleItemCheck(arr.id)}
-            button
+            onClick={() => handleItemCheck(index)}
+            // button
             sx={{
               border: "2px solid gray",
               marginBottom: "4px",
@@ -66,18 +66,18 @@ function App() {
           >
             <ListItemIcon>
               <Checkbox
-                checked={selectedItems.includes(arr.id)}
-                onChange={() => handleItemCheck(arr.id)}
+                checked={selectedItems.includes(index)}
+                onChange={() => handleItemCheck(index)}
               />
               {/* <Typography>`${id}`</Typography> */}
             </ListItemIcon>
             {/* {array.map((arr) => ( */}
             <ListItemText
-              primary={arr.name}
+              primary={arr}
               primaryTypographyProps={{
                 variant: "h5",
                 sx: {
-                  textDecoration: selectedItems.includes(arr.id)
+                  textDecoration: selectedItems.includes(index)
                     ? "line-through"
                     : "none",
                   color: "gray",
