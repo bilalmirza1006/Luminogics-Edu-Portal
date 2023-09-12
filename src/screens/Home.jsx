@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
-import { weeks, Item } from "../constants/home";
+import { Box, Grid } from "@mui/material";
+import { Item } from "../constants/home";
 import { Link } from "react-router-dom";
 import axios from "axios";
 

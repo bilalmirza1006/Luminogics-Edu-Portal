@@ -6,25 +6,25 @@ import Typography from "@mui/material/Typography";
 import { weeks } from "../constants/home";
 import { useParams } from "react-router-dom";
 import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import { CheckBox } from "@mui/icons-material";
+// import { CheckBox } from "@mui/icons-material";
 
 function App() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(0);
 
-  const handleItemCheck = (itemId) => {
-    const updatedItems = selectedItems.includes(itemId)
-      ? selectedItems.filter((item) => item !== itemId)
-      : [...selectedItems, itemId];
+  const handleItemCheck = (index) => {
+    const updatedItems = selectedItems.includes(index)
+      ? selectedItems.filter((item) => item !== index)
+      : [...selectedItems, index];
 
     setSelectedItems(updatedItems);
 
-    const completionPercentage = (updatedItems.length / weeks.length) * 100;
+    const completionPercentage = (updatedItems.length / array.length) * 100;
 
     setLoading(completionPercentage);
   };
 
-  const { id, item } = useParams();
+  const { item } = useParams();
   // console.log("item", item);
   const array = item.split(",");
   console.log("array", array);

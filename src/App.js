@@ -1,4 +1,5 @@
 import './App.css';
+import AddWeeks from './screens/AddWeeks';
 // import Domy from './screens/Domy';
 import Header from './screens/Header';
 import Home from './screens/Home';
@@ -14,6 +15,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+
+        <Route path="/add-week" element={<AddWeeks />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         {/* <Route path="/" element={<Domy />} /> */}
