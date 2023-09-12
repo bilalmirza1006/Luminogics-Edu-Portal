@@ -1,7 +1,9 @@
 import './App.css';
-import Domy from './screens/Domy';
+// import Domy from './screens/Domy';
 import Header from './screens/Header';
 import Home from './screens/Home';
+import SignIn from './screens/SignIn';
+import SignUp from './screens/SignUp';
 import Week from './screens/Week';
 import { Route, Routes } from 'react-router-dom';
 // import ho
@@ -12,8 +14,10 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
         {/* <Route path="/" element={<Domy />} /> */}
-        <Route path="/week/:id" element={<Week />} />
+        <Route path="/week/:id/:item" element={<Week />} />
       </Routes>
     </div>
   );

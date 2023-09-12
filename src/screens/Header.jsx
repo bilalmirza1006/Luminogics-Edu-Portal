@@ -27,7 +27,11 @@ function Header() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, display: "flex" }}
+            >
               <Link
                 style={{ color: "#FFF", textDecoration: "none" }}
                 // sx={{ color: "#FFF", textDecoration: "none" }}

@@ -5,6 +5,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import { weeks } from "../constants/home";
 import { useParams } from "react-router-dom";
+import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { CheckBox } from "@mui/icons-material";
 
 function App() {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -22,7 +24,10 @@ function App() {
     setLoading(completionPercentage);
   };
 
-  const { id } = useParams();
+  const { id, item } = useParams();
+  // console.log("item", item);
+  const array = item.split(",");
+  console.log("array", array);
   return (
     <Box sx={{ margin: "20px" }}>
       <Typography variant="h3" sx={{ display: "flex" }}>
@@ -45,28 +50,49 @@ function App() {
           />
         </Box>
       )}
-      {weeks.map((item) => (
-        <Box key={item.id} display="flex" alignItems="center">
-          <Checkbox
-            checked={selectedItems.includes(item.id)}
-            onChange={() => handleItemCheck(item.id)}
-          />
-          <Typography>`${id}`</Typography>
-          <Typography
-            // variant="body1"
-            variant="h5"
+
+      <List>
+        {weeks.map((arr) => (
+          <ListItem
+            key={arr.id}
+            disablePadding
+            onClick={() => handleItemCheck(arr.id)}
+            button
             sx={{
-              textDecoration: selectedItems.includes(item.id)
-                ? "line-through"
-                : "none",
+              border: "2px solid gray",
+              marginBottom: "4px",
+              borderRadius: "100px",
             }}
           >
-            {item.name}
-          </Typography>
-        </Box>
-      ))}
+            <ListItemIcon>
+              <Checkbox
+                checked={selectedItems.includes(arr.id)}
+                onChange={() => handleItemCheck(arr.id)}
+              />
+              {/* <Typography>`${id}`</Typography> */}
+            </ListItemIcon>
+            {/* {array.map((arr) => ( */}
+            <ListItemText
+              primary={arr.name}
+              primaryTypographyProps={{
+                variant: "h5",
+                sx: {
+                  textDecoration: selectedItems.includes(arr.id)
+                    ? "line-through"
+                    : "none",
+                  color: "gray",
+                },
+              }}
+            />
+            {/* ))} */}
+          </ListItem>
+        ))}
+      </List>
     </Box>
   );
 }
 
 export default App;
+///
+////
+////

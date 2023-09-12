@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
 import { weeks, Item } from "../constants/home";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 // const HandleWeek = () => {
 //   // alert("hallo");
@@ -11,6 +12,16 @@ import { Link } from "react-router-dom";
 function Home() {
   // const theme = useTheme();
   // const matches = useMediaQuery(theme.breakpoints.up("lg"));
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    // setLoading(true);
+    axios
+      .get("http://localhost:6464/api/get-weeks")
+      .then((res) => setData(res.data))
+      .catch((error) => console.log(error.message));
+    // setLoading(false);
+  }, []);
+  console.log("data", data);
   return (
     <div>
       <Box
@@ -38,7 +49,7 @@ function Home() {
           // md
           // lg
         >
-          {weeks.map((week) => (
+          {data.map((week) => (
             <Grid
               item
               xs={12}
@@ -66,10 +77,10 @@ function Home() {
               >
                 <Link
                   style={{ color: "black", textDecoration: "none" }}
-                  to={`/week/${week.id}`}
+                  to={`/week/${week._id}/${week.item}`}
                 >
                   <Box>{week.name}</Box>
-                  <Box>{week.list}</Box>
+                  <Box>{week.no_of_item}</Box>
                 </Link>
               </Item>
             </Grid>
