@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Chip,
@@ -16,9 +17,11 @@ function AddWeeks() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [list, setList] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
 
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("lg"));
+  const matches = useMediaQuery(theme.breakpoints.up("sm"));
+
   const leftSideStyle = {
     backgroundColor: "white",
     padding: "2rem",
@@ -53,54 +56,92 @@ function AddWeeks() {
   };
 
   const handleApi = () => {
-    axios
-      .post("http://localhost:6464/api/add-weeks", {
-        name: name,
-        item: list,
-      })
-      .then((response) => {
-        // setLoading(true);
-        // alert('Product Add')
-        // fetchApi();
-        // console.log("hi", response)
-      });
+    if (name.trim() === "" || list.length === 0) {
+      // alert("hallo");
+      // <Alert variant="outlined" severity="error">
+      //   This is an error alert — check it out!
+      // </Alert>;
+      setShowAlert(true);
+    } else {
+      setName("");
+      setList([]);
+      axios
+        .post("http://localhost:6464/api/add-weeks", {
+          name: name,
+          item: list,
+        })
+        .then((response) => {
+          if (!response.data.success) {
+            throw new Error("complet all the fields");
+          }
+          console.log(response);
+          // navigate("/sign-in");
+          alert("submitted");
+        })
+        .catch((error) => {
+          alert(error);
+          console.log("CATCH: ", error);
+        });
+      // setList([]);
+      // setName("");
+    }
+  };
+
+  const handleReset = () => {
+    setList([]);
+    setName("");
   };
 
   return (
-    <Box
-      sx={{
-        minWidth: "100%",
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "linear-gradient(to right bottom,  #525252, #3d72b4)",
-      }}
-    >
-      <Grid item xs={12} sm={6} sx={leftSideStyle}>
-        <div
-          style={{
-            width: "80%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            // border: "2px solid black",
-          }}
-        >
-          <Typography variant={matches ? "h3" : "h6"} color="black" mb={2}>
-            Add Weeks
-          </Typography>
+    <div>
+      <Box
+        sx={{
+          minWidth: "100%",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "linear-gradient(to right bottom,  #525252, #3d72b4)",
+        }}
+      >
+        {/* <Grid sx={{ width: "40%" }}> */}
+        <Grid item xs={12} sm={6} sx={leftSideStyle}>
+          <div
+            style={{
+              width: "90%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {showAlert && (
+              <Alert variant="outlined" severity="error">
+                This is an error alert — check it out!
+              </Alert>
+            )}
+            <Typography variant={matches ? "h3" : "h6"} color="black" mb={2}>
+              Add Weeks
+            </Typography>
 
-          <TextField
-            label="Week Name"
-            variant="outlined"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Box>
             <TextField
-              sx={{ m: 2 }}
+              sx={{
+                width: "100%",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+                marginBottom: "15px",
+              }}
+              label="Week Name"
+              variant="outlined"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            {/* <Box> */}
+            <TextField
+              sx={{
+                width: "100%",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+                marginBottom: "15px",
+              }}
               id="outlined-basic"
               label="category"
               variant="outlined"
@@ -113,6 +154,8 @@ function AddWeeks() {
                 sx={{
                   display: "flex",
                   flexDirection: matches ? "row" : "column",
+                  flexWrap: "wrap",
+                  // flex-wrap: wrap,
                   height: "70%",
                   width: "100%",
                   borderRadius: "8px",
@@ -142,6 +185,12 @@ function AddWeeks() {
               </Typography>
             ) : null}
             <Button
+              sx={{
+                width: "100%",
+                height: "50px",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+                marginBottom: 2,
+              }}
               size="medium"
               onClick={() => {
                 if (category.trim() === "") {
@@ -149,23 +198,62 @@ function AddWeeks() {
                 } else {
                   setList([...list, category]);
                   setCategory("");
-                  // alert("clicked");
                   console.log("history", list);
                 }
               }}
-              sx={{ m: 2 }}
+              // sx={{ m: 2 }}
               variant="contained"
             >
               Add Category
             </Button>
-          </Box>
-          <Button variant="contained" onClick={handleApi}>
-            Submit
-          </Button>
-          <Button variant="contained">reset</Button>
-        </div>
-      </Grid>
-    </Box>
+            {/* </Box> */}
+            <Box
+              sx={{
+                // width: "100%",
+
+                width: "100%",
+                display: "flex",
+                // flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+
+                // height: "50px",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+                // marginBottom: 2,
+                // display: "flex",
+              }}
+            >
+              <Button
+                sx={{
+                  width: "100%",
+                  height: "50px",
+                  boxShadow: "0px 4px 8px rgba( 0.5)",
+                  // marginBottom: 2,
+                  // display: "flex",
+                }}
+                variant="contained"
+                onClick={handleApi}
+              >
+                Submit
+              </Button>
+              <Button
+                sx={{
+                  width: "100%",
+                  height: "50px",
+                  boxShadow: "0px 4px 8px rgba( 0.5)",
+                  // marginBottom: 2,
+                  // display: "flex",
+                }}
+                variant="contained"
+                onClick={handleReset}
+              >
+                reset
+              </Button>
+            </Box>
+          </div>
+        </Grid>
+      </Box>
+    </div>
   );
 }
 

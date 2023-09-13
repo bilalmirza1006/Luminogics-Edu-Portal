@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Grid,
   IconButton,
   InputAdornment,
@@ -20,13 +21,18 @@ import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState("true");
+  const [showConfirmPassword, setShowConfirmPassword] = useState("true");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
   const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleShowConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
   const handelEmail = (event) => {
     setEmail(event.target.value);
   };
@@ -36,28 +42,38 @@ function SignUp() {
   const handelPassword = (event) => {
     setPassword(event.target.value);
   };
+  const handelConfirmPassword = (event) => {
+    setConfirmPassword(event.target.value);
+  };
+
+  const validation = () => confirmPassword === password;
   const navigate = useNavigate();
 
   const handelApi = () => {
-    console.log("signup", name, email, password);
-    axios
-      .post("http://localhost:6464/api/register-user", {
-        name: name,
-        email: email,
-        password: password,
-      })
-      .then((response) => {
-        if (!response.data.success) {
-          throw new Error("USER NOT FOUND");
-        }
-        console.log(response);
-        navigate("/sign-in");
-        alert("submitted");
-      })
-      .catch((error) => {
-        alert(error);
-        console.log("CATCH: ", error);
-      });
+    // console.log("signup", name, email, password);
+    setLoading(true);
+    if (validation()) {
+      axios
+        .post("http://localhost:6464/api/register-user", {
+          name: name,
+          email: email,
+          password: password,
+        })
+        .then((response) => {
+          if (!response.data.success) {
+            throw new Error("USER NOT FOUND");
+          }
+          console.log(response);
+          navigate("/sign-in");
+          alert("submitted");
+        })
+        .catch((error) => {
+          alert(error);
+          console.log("CATCH: ", error);
+        });
+    } else {
+      return alert("match");
+    }
   };
 
   const leftSideStyle = {
@@ -67,7 +83,7 @@ function SignUp() {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: matches ? "80vh" : "70vh",
+    height: matches ? "80%" : "70%",
     border: "2px solid black",
     width: matches ? "50%" : "80%",
     borderRadius: "20px",
@@ -108,6 +124,7 @@ function SignUp() {
               id="filled-basic"
               label="Name"
               variant="filled"
+              disabled={loading}
               mb={2}
               value={name}
               onChange={handelName}
@@ -120,6 +137,7 @@ function SignUp() {
               id="filled-basic"
               label="Email"
               variant="filled"
+              disabled={loading}
               mb={2}
               value={email}
               onChange={handelEmail}
@@ -133,6 +151,7 @@ function SignUp() {
               id="outlined-password-input"
               label="Password"
               variant="filled"
+              disabled={loading}
               value={password}
               onChange={handelPassword}
               autoComplete="current-password"
@@ -154,31 +173,76 @@ function SignUp() {
                 ),
               }}
             />
-            <Button
+
+            <TextField
               sx={{
+                m: 2,
                 width: "100%",
-                height: "50px",
                 boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
               }}
-              variant="contained"
-              disableElevation
-              mb={2}
-              onClick={handelApi}
-            >
-              Signin
-            </Button>
+              id="outlined-password-input"
+              label="Password"
+              variant="filled"
+              disabled={loading}
+              helperText={
+                confirmPassword &&
+                !validation() && (
+                  <p style={{ color: "red" }}>Passwords do not match</p>
+                )
+              }
+              value={confirmPassword}
+              onChange={handelConfirmPassword}
+              autoComplete="current-password"
+              type={showConfirmPassword ? "password" : "text"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleShowConfirmPassword}
+                    >
+                      {showConfirmPassword ? (
+                        <VisibilityOffIcon />
+                      ) : (
+                        <VisibilityIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
 
-            <Box
+            {loading ? (
+              <CircularProgress size={24} />
+            ) : (
+              <Button
+                sx={{
+                  width: "100%",
+                  height: "50px",
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+                }}
+                variant="contained"
+                disableElevation
+                mb={2}
+                onClick={handelApi}
+              >
+                Signin
+              </Button>
+            )}
+
+            {/* <Box
               sx={{
                 display: "flex",
                 p: 2,
               }}
-            >
-              <Box>
-                <Typography>Already have an account?</Typography>
-              </Box>
-              <Link to={"/sign-in"}> SignIn.</Link>
+            > */}
+            <Box>
+              <Typography sx={{ marginTop: "10px" }}>
+                Have an account already?
+              </Typography>
             </Box>
+            <Link to={"/sign-in"}> SignIn.</Link>
+            {/* </Box> */}
 
             <Typography>or signUp with</Typography>
             <Box

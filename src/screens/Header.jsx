@@ -40,7 +40,16 @@ function Header() {
                 Header
               </Link>
             </Typography>
-            <Button color="inherit">Login</Button>
+
+            <Button color="inherit">
+              <Link
+                style={{ color: "white", textDecoration: "none" }}
+                to={"/sign-in"}
+              >
+                {" "}
+                Login.
+              </Link>
+            </Button>
           </Toolbar>
         </AppBar>
       </Box>

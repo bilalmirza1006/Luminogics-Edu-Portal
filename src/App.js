@@ -19,7 +19,7 @@ function App() {
         <Route path="/add-week" element={<AddWeeks />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
-        {/* <Route path="/" element={<Domy />} /> */}
+        {/* <Route path="/" element={<DomyScreen />} /> */}
         <Route path="/week/:id/:item" element={<Week />} />
       </Routes>
     </div>

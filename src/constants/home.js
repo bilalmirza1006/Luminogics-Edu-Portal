@@ -24,3 +24,15 @@ export const Item = styled(Paper)(({ theme }) => ({
   boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.7)',
 
 }));
+
+
+// const {
+//   home:{
+//     name:""
+//   },
+//   week:{
+
+//   }
+// }
+//  import obj
+//  obj.home.name

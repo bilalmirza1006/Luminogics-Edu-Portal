@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Grid,
   IconButton,
   InputAdornment,
@@ -26,6 +27,7 @@ function SignIn() {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
   const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const [loading, setLoading] = useState(false);
 
   //  const theme = useTheme();
   // const matches = useMediaQuery(theme.breakpoints.up("lg"));
@@ -39,6 +41,7 @@ function SignIn() {
   const handelApi = () => {
     console.log("signin", email, password);
     // navigate("/");
+    setLoading(true);
     axios
       .post("http://localhost:6464/api/login", {
         // name: name,
@@ -66,7 +69,7 @@ function SignIn() {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: matches ? "80vh" : "70vh",
+    height: matches ? "80%" : "70%",
     border: "2px solid black",
     width: matches ? "50%" : "80%",
     borderRadius: "20px",
@@ -81,15 +84,9 @@ function SignIn() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          // backgroundColor: "gray",
           background: "linear-gradient(to right bottom,  #525252, #3d72b4)",
-          // background: l("to bottom, red, blue"),
-          // backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fffff",
-          // textShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-          // boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.7)",
         }}
       >
-        {/* <Grid sx={{ width: "40%" }}> */}
         <Grid item xs={12} sm={6} sx={leftSideStyle}>
           <div
             style={{
@@ -113,6 +110,7 @@ function SignIn() {
               id="filled-basic"
               label="Email"
               variant="filled"
+              disabled={loading}
               mb={2}
               value={email}
               onChange={handelEmail}
@@ -126,6 +124,7 @@ function SignIn() {
               id="outlined-password-input"
               label="Password"
               variant="filled"
+              disabled={loading}
               value={password}
               onChange={handelPassword}
               autoComplete="current-password"
@@ -147,31 +146,37 @@ function SignIn() {
                 ),
               }}
             />
-            <Button
-              sx={{
-                width: "100%",
-                height: "50px",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-              }}
-              variant="contained"
-              disableElevation
-              mb={2}
-              onClick={handelApi}
-            >
-              Signin
-            </Button>
+            {loading ? (
+              <CircularProgress size={24} />
+            ) : (
+              <Button
+                sx={{
+                  width: "100%",
+                  height: "50px",
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+                }}
+                variant="contained"
+                disableElevation
+                mb={2}
+                onClick={handelApi}
+              >
+                Signin
+              </Button>
+            )}
 
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
-                p: 2,
+                // p: 2,
               }}
-            >
-              <Box>
-                <Typography>If you don't have an account, please:</Typography>
-              </Box>
-              <Link to={"/sign-up"}> Signup.</Link>
+            > */}
+            <Box>
+              <Typography sx={{ marginTop: "10px" }}>
+                Don't have an account yet?:
+              </Typography>
             </Box>
+            <Link to={"/sign-up"}> Signup.</Link>
+            {/* </Box> */}
 
             <Typography>or sign in with</Typography>
             <Box
@@ -228,7 +233,6 @@ function SignIn() {
             </Box>
           </div>
         </Grid>
-        {/* </Grid> */}
       </Box>
     </div>
   );
