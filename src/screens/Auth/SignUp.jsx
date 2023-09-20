@@ -49,30 +49,50 @@ function SignUp() {
   const validation = () => confirmPassword === password;
   const navigate = useNavigate();
 
-  const handelApi = () => {
-    // console.log("signup", name, email, password);
+  const handleApi = () => {
     setLoading(true);
-    if (validation()) {
+    if (!validation()) {
+      alert("Passwords must  match.");
+      setLoading(false);
+    } else {
       axios
         .post("http://localhost:6464/api/register-user", {
           name: name,
           email: email,
           password: password,
         })
+
         .then((response) => {
           if (!response.data.success) {
-            throw new Error("USER NOT FOUND");
+            throw new Error(response.data.msg);
+          } else {
+            console.log("Registration successful");
+            alert("Registration successful");
+            navigate("/sign-in");
           }
-          console.log(response);
-          navigate("/sign-in");
-          alert("submitted");
+          setLoading(false);
         })
         .catch((error) => {
-          alert(error);
-          console.log("CATCH: ", error);
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.msg
+          ) {
+            alert(error.response.data.msg);
+            setLoading(false);
+          } else {
+            alert(
+              "An error occurred while registering. Please try again later."
+            );
+          }
+          // console.error("Error: ", error);
+          setLoading(false);
         });
-    } else {
-      return alert("match");
+      // if (validation()) {
+      //   setLoading(false);
+      // } else {
+      //   setLoading(true);
+      // }
     }
   };
 
@@ -105,14 +125,14 @@ function SignUp() {
         <Grid item xs={12} sm={6} sx={leftSideStyle}>
           <div
             style={{
-              width: "90%",
+              width: "100%",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Typography variant={matches ? "h3" : "h6"} color="black" mb={2}>
+            <Typography variant={matches ? "h3" : "h4"} color="black" mb={2}>
               SignUp
             </Typography>
             <TextField
@@ -176,7 +196,7 @@ function SignUp() {
 
             <TextField
               sx={{
-                m: 2,
+                mb: 2,
                 width: "100%",
                 boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
               }}
@@ -212,23 +232,29 @@ function SignUp() {
               }}
             />
 
-            {loading ? (
-              <CircularProgress size={24} />
-            ) : (
-              <Button
-                sx={{
-                  width: "100%",
-                  height: "50px",
-                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-                }}
-                variant="contained"
-                disableElevation
-                mb={2}
-                onClick={handelApi}
-              >
-                Signin
-              </Button>
-            )}
+            <Button
+              sx={{
+                width: "100%",
+                height: "50px",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+              }}
+              variant="contained"
+              disableElevation
+              mb={2}
+              onClick={handleApi}
+              disabled={loading}
+            >
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  style={{
+                    color: "black",
+                    marginRight: "5px",
+                  }}
+                />
+              )}
+              SignIn
+            </Button>
 
             {/* <Box
               sx={{

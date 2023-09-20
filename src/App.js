@@ -1,26 +1,30 @@
+import { ToastContainer } from 'react-toastify';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import SignIn from './screens/Auth/SignIn';
+import SignUp from './screens/Auth/SignUp';
 import AddWeeks from './screens/AddWeeks';
-// import Domy from './screens/Domy';
+import EditWeek from './screens/EditWeek';
 import Header from './screens/Header';
 import Home from './screens/Home';
-import SignIn from './screens/SignIn';
-import SignUp from './screens/SignUp';
 import Week from './screens/Week';
-import { Route, Routes } from 'react-router-dom';
-// import ho
+import DomyScreen from './screens/DomyScreen';
 
 function App() {
   return (
     <div className="App">
       <Header />
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
 
-        <Route path="/add-week" element={<AddWeeks />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
-        {/* <Route path="/" element={<DomyScreen />} /> */}
-        <Route path="/week/:id/:item" element={<Week />} />
+        <Route path="/domy-screen" element={<DomyScreen />} />
+        <Route path="/week" element={<Week />} />
+        <Route path="/add-week" element={<AddWeeks />} />
+        <Route path="/edit-week" element={<EditWeek />} />
+
       </Routes>
     </div>
   );

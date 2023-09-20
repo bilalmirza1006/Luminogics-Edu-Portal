@@ -3,14 +3,23 @@ import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
-import { weeks } from "../constants/home";
-import { useParams } from "react-router-dom";
-import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+// import { weeks } from "../constants/home";
+import { useLocation, useParams } from "react-router-dom";
+import {
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 // import { CheckBox } from "@mui/icons-material";
 
 function App() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(0);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleItemCheck = (index) => {
     const updatedItems = selectedItems.includes(index)
@@ -19,18 +28,43 @@ function App() {
 
     setSelectedItems(updatedItems);
 
-    const completionPercentage = (updatedItems.length / array.length) * 100;
+    const completionPercentage = (updatedItems.length / newstate.length) * 100;
 
     setLoading(completionPercentage);
   };
+  // const { items } = useParams();
+  // const decodedArray = JSON.parse(decodeURIComponent(items));
 
-  const { item } = useParams();
-  // console.log("item", item);
-  const array = item.split(",");
-  console.log("array", array);
+  const {state}  = useLocation();
+  const params = useParams()
+  // console.log('myArray:', state);
+  const newstate=state?.data
+
+
+  // const location = useLocation();
+  // const { myArray } = location.state || {}; // Access the data from state
+
+  // // Now you can use `myArray` in this component
+  // console.log('new',myArray);
+
+
+  // Now, decodedArray contains the passed array of objects from Screen1
+  // const history = useHis
+  // const location = useLocation();
+  // const {items} =  location.state||{}
+  // console.log('new',items)
+  // const params = useParams()
+  // console.log( 'yoyoy',location, params);
+
+  // const { id,items } = location.state || {};
+  // console.log('new',id, items);
+  // const { items }  = useParams();
+  // console.log("item", JSON.stringify(items?.items));
+  // const array = item.split(",");
+  // console.log("array", array);
   return (
     <Box sx={{ margin: "20px" }}>
-      <Typography variant="h3" sx={{ display: "flex" }}>
+      <Typography variant={matches ? "h3" : "h4"} sx={{ display: "flex" }}>
         List of Items
       </Typography>
       {loading >= 0 && (
@@ -52,7 +86,7 @@ function App() {
       )}
 
       <List>
-        {array.map((arr, index) => (
+        {newstate.map((arr, index) => (
           <ListItem
             key={index}
             disablePadding
@@ -69,11 +103,9 @@ function App() {
                 checked={selectedItems.includes(index)}
                 onChange={() => handleItemCheck(index)}
               />
-              {/* <Typography>`${id}`</Typography> */}
             </ListItemIcon>
-            {/* {array.map((arr) => ( */}
             <ListItemText
-              primary={arr}
+              primary={arr.name}
               primaryTypographyProps={{
                 variant: "h5",
                 sx: {
@@ -84,7 +116,6 @@ function App() {
                 },
               }}
             />
-            {/* ))} */}
           </ListItem>
         ))}
       </List>

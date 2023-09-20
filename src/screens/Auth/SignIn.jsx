@@ -10,6 +10,9 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import "@fontsource/lexend/400.css";
+import { Font } from 'google-fonts';
+
 import React, { useState } from "react";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -18,6 +21,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState("true");
@@ -38,29 +42,53 @@ function SignIn() {
     setPassword(event.target.value);
   };
 
-  const handelApi = () => {
+  const handleApi = () => {
     console.log("signin", email, password);
-    // navigate("/");
     setLoading(true);
     axios
       .post("http://localhost:6464/api/login", {
-        // name: name,
         email: email,
         password: password,
       })
       .then((response) => {
         if (!response.data.success) {
-          throw new Error("USER NOT FOUND");
+          throw new Error(response.data.result);
         }
-        console.log(response);
+  
+        localStorage.setItem("token", response.data.token);
+  
+        console.log("hi", response.data);
         navigate("/");
-        // alert("submitted");
       })
       .catch((error) => {
-        alert(error);
-        console.log("CATCH: ", error);
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.result
+        ) {
+          toast.error(error.response.data.result, {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } else {
+          toast.error("An error occurred.", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
+        console.log("Error: ", error);
+        setLoading(false);
       });
   };
+  
 
   const leftSideStyle = {
     backgroundColor: "white",
@@ -90,7 +118,7 @@ function SignIn() {
         <Grid item xs={12} sm={6} sx={leftSideStyle}>
           <div
             style={{
-              width: "80%",
+              width: "100%",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
@@ -98,7 +126,7 @@ function SignIn() {
               // border: "2px solid black",
             }}
           >
-            <Typography variant={matches ? "h3" : "h6"} color="black" mb={2}>
+            <Typography variant={matches ? "h3" : "h4"} color="black" mb={2}>
               Signin
             </Typography>
 
@@ -146,23 +174,28 @@ function SignIn() {
                 ),
               }}
             />
-            {loading ? (
-              <CircularProgress size={24} />
-            ) : (
-              <Button
-                sx={{
-                  width: "100%",
-                  height: "50px",
-                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-                }}
-                variant="contained"
-                disableElevation
-                mb={2}
-                onClick={handelApi}
-              >
-                Signin
-              </Button>
-            )}
+            <Button
+              sx={{
+                width: "100%",
+                height: "50px",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+              }}
+              variant="contained"
+              mb={2}
+              onClick={handleApi}
+              disabled={loading}
+            >
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  style={{
+                    color: "white",
+                    marginRight: "5px",
+                  }}
+                />
+              )}
+              SignIn
+            </Button>
 
             {/* <Box
               sx={{

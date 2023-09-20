@@ -1,4 +1,7 @@
+import React, { useState } from "react";
+import axios from "axios";
 import {
+  Alert,
   Box,
   Button,
   Chip,
@@ -10,16 +13,12 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import axios from "axios";
-import React, { useState } from "react";
-
-function AddWeeks() {
+function EditWeek() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [list, setList] = useState([]);
   // const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
-  // const [loading, setLoading] = useState(false);
 
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
@@ -42,79 +41,66 @@ function AddWeeks() {
     alert("click handel");
   };
 
-  const handleDelete = (currentItem) => {
-    console.log("currentItem", currentItem);
-
-    const updatedList = list.filter((item) => item.name !== currentItem.name);
+  const handleDelete = (itemToDelete) => {
+    const updatedList = list.filter((item) => item !== itemToDelete);
     setList(updatedList);
   };
 
   const handleKeyDown = (e) => {
-    console.log("list", list);
-
     if (e.key === "Enter") {
       e.preventDefault();
       if (category.trim() === "") {
         alert("Please Enter the Category");
-      } else setList([...list, { name: category, completed: false }]);
+      } else setList([...list, category]);
       setCategory("");
     }
   };
-  const handleApi = () => {
-    setLoading(true);
 
-    // if (name.trim() === "" || list.length === 0) {
-    //   // alert("hallo");
-    //   // <Alert variant="outlined" severity="error">
-    //   //   This is an error alert — check it out!
-    //   // </Alert>;
-    //   alert("complet all the filde");
-    //   // setShowAlert(true);
-    // } else {
-    //   setName("");
-    //   setList([]);
-    var data = {
-      name: name,
-      items: list,
-    };
+  // useEffect(() => {
+  //   setLoading(true);
+  //   axios
+  //     .get("http://localhost:3009/product-list")
+  //     .then((res) => setData(res.data))
+  //     .catch((error) => console.log(error.message));
+  //   setLoading(false);
+  // }, []);
 
-    var header = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-    console.log("data", data);
-    //    console.log('token', localStorage.getItem('token'))
-    // return
-    axios
-      .post(
-        "http://localhost:6464/api/add-weeks",
-        data,
-        header
-        // {
-        //   name: name,
-        //   item: list,
-        // }
-      )
-      .then((response) => {
-        if (!response.data.success) {
-          throw new Error(response.data.msg);
-        }
-        console.log(response);
-        // navigate("/sign-in");
-        alert("submitted");
-        setLoading(false);
-      })
-      .catch((error) => {
-        if (error.response && error.response.data && error.response.data.msg) {
-          alert(error.response.data.msg);
-        } else {
-          alert("An error occurred while registering. Please try again later.");
-        }
-        console.error("Error: ", error);
-        setLoading(false);
-      });
-  };
+  // const handleApi = () => {
+  //   setLoading(true);
+
+  //   // if (name.trim() === "" || list.length === 0) {
+  //   //   // alert("hallo");
+  //   //   // <Alert variant="outlined" severity="error">
+  //   //   //   This is an error alert — check it out!
+  //   //   // </Alert>;
+  //   //   alert("complet all the filde");
+  //   //   // setShowAlert(true);
+  //   // } else {
+  //   //   setName("");
+  //   //   setList([]);
+  //   axios
+  //     .post("http://localhost:6464/api/add-weeks", {
+  //       name: name,
+  //       item: list,
+  //     })
+  //     .then((response) => {
+  //       if (!response.data.success) {
+  //         throw new Error(response.data.msg);
+  //       }
+  //       console.log(response);
+  //       // navigate("/sign-in");
+  //       alert("submitted");
+  //     })
+  //     .catch((error) => {
+  //       if (error.response && error.response.data && error.response.data.msg) {
+  //         alert(error.response.data.msg);
+  //       } else {
+  //         alert("An error occurred while registering. Please try again later.");
+  //       }
+  //       console.error("Error: ", error);
+  //       setLoading(false);
+  //     });
+  // };
 
   const handleReset = () => {
     setList([]);
@@ -145,7 +131,7 @@ function AddWeeks() {
             }}
           >
             <Typography variant={matches ? "h3" : "h4"} color="black" mb={2}>
-              Add Weeks
+              Edit Week
             </Typography>
             <TextField
               sx={{
@@ -160,13 +146,7 @@ function AddWeeks() {
               onChange={(e) => setName(e.target.value)}
             />
             {/* <Box> */}
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: matches ? "row" : "column",
-                width: "100%",
-              }}
-            >
+            <Box sx={{ display: "flex", width: "100%" }}>
               <TextField
                 sx={{
                   width: "100%",
@@ -182,16 +162,10 @@ function AddWeeks() {
                 onKeyDown={handleKeyDown}
               />
               <Button
-                // sx={{
-                //   width: "100%",
-                //   height: "50px",
-                //   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-                //   marginBottom: 2,
-                // }}
                 sx={{
-                  marginLeft: matches ? 2 : 0,
-                  width: matches ? "50%" : "100%",
-                  height: "55px",
+                  marginLeft: 2,
+                  // width: "100%",
+                  // height: "100vh",
                   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
                   marginBottom: 2,
                 }}
@@ -200,7 +174,7 @@ function AddWeeks() {
                   if (category.trim() === "") {
                     alert("Please enter the Category");
                   } else {
-                    setList([...list, { name: category, completed: false }]);
+                    setList([...list, category]);
                     setCategory("");
                     console.log("history", list);
                   }
@@ -240,7 +214,7 @@ function AddWeeks() {
                   >
                     <Stack alignItems={"center"} spacing={1}>
                       <Chip
-                        label={item.name}
+                        label={item}
                         onClick={handleClick}
                         onDelete={() => handleDelete(item)}
                         variant="outlined"
@@ -278,8 +252,8 @@ function AddWeeks() {
                 variant="contained"
                 disableElevation
                 mb={2}
-                onClick={handleApi}
-                // disabled={loading}
+                // onClick={handleApi}
+                disabled={loading}
               >
                 {loading && (
                   <CircularProgress
@@ -303,9 +277,9 @@ function AddWeeks() {
                 disableElevation
                 mb={2}
                 onClick={handleReset}
-                // disabled={loading}
+                disabled={loading}
               >
-                {/* {loading && (
+                {loading && (
                   <CircularProgress
                     size={24}
                     style={{
@@ -313,7 +287,7 @@ function AddWeeks() {
                       marginRight: "5px",
                     }}
                   />
-                )} */}
+                )}
                 reset
               </Button>
             </Box>
@@ -324,4 +298,4 @@ function AddWeeks() {
   );
 }
 
-export default AddWeeks;
+export default EditWeek;
