@@ -17,6 +17,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
@@ -52,7 +54,14 @@ function SignUp() {
   const handleApi = () => {
     setLoading(true);
     if (!validation()) {
-      alert("Passwords must  match.");
+      toast.success("Passwords must  match.", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       setLoading(false);
     } else {
       axios
@@ -66,8 +75,14 @@ function SignUp() {
           if (!response.data.success) {
             throw new Error(response.data.msg);
           } else {
-            console.log("Registration successful");
-            alert("Registration successful");
+            toast.success("Registration successful", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
             navigate("/sign-in");
           }
           setLoading(false);
@@ -78,21 +93,30 @@ function SignUp() {
             error.response.data &&
             error.response.data.msg
           ) {
-            alert(error.response.data.msg);
+            toast.error(error.response.data.msg, {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
             setLoading(false);
           } else {
-            alert(
-              "An error occurred while registering. Please try again later."
+            toast.error(
+              "An error occurred while registering. Please try again later.",
+              {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+              }
             );
           }
-          // console.error("Error: ", error);
           setLoading(false);
         });
-      // if (validation()) {
-      //   setLoading(false);
-      // } else {
-      //   setLoading(true);
-      // }
     }
   };
 

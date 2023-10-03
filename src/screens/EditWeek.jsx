@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
-  Alert,
   Box,
   Button,
   Chip,
@@ -17,7 +17,6 @@ function EditWeek() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [list, setList] = useState([]);
-  // const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const theme = useTheme();
@@ -36,11 +35,6 @@ function EditWeek() {
     borderRadius: "20px",
   };
 
-  const handleClick = () => {
-    console.info("You clicked the Chip.");
-    alert("click handel");
-  };
-
   const handleDelete = (itemToDelete) => {
     const updatedList = list.filter((item) => item !== itemToDelete);
     setList(updatedList);
@@ -50,58 +44,20 @@ function EditWeek() {
     if (e.key === "Enter") {
       e.preventDefault();
       if (category.trim() === "") {
-        alert("Please Enter the Category");
+        toast.error("Please Enter the Category", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       } else setList([...list, category]);
       setCategory("");
     }
   };
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   axios
-  //     .get("http://localhost:3009/product-list")
-  //     .then((res) => setData(res.data))
-  //     .catch((error) => console.log(error.message));
-  //   setLoading(false);
-  // }, []);
-
-  // const handleApi = () => {
-  //   setLoading(true);
-
-  //   // if (name.trim() === "" || list.length === 0) {
-  //   //   // alert("hallo");
-  //   //   // <Alert variant="outlined" severity="error">
-  //   //   //   This is an error alert — check it out!
-  //   //   // </Alert>;
-  //   //   alert("complet all the filde");
-  //   //   // setShowAlert(true);
-  //   // } else {
-  //   //   setName("");
-  //   //   setList([]);
-  //   axios
-  //     .post("http://localhost:6464/api/add-weeks", {
-  //       name: name,
-  //       item: list,
-  //     })
-  //     .then((response) => {
-  //       if (!response.data.success) {
-  //         throw new Error(response.data.msg);
-  //       }
-  //       console.log(response);
-  //       // navigate("/sign-in");
-  //       alert("submitted");
-  //     })
-  //     .catch((error) => {
-  //       if (error.response && error.response.data && error.response.data.msg) {
-  //         alert(error.response.data.msg);
-  //       } else {
-  //         alert("An error occurred while registering. Please try again later.");
-  //       }
-  //       console.error("Error: ", error);
-  //       setLoading(false);
-  //     });
-  // };
-
+  //
   const handleReset = () => {
     setList([]);
     setName("");
@@ -119,7 +75,6 @@ function EditWeek() {
           background: "linear-gradient(to right bottom,  #525252, #3d72b4)",
         }}
       >
-        {/* <Grid sx={{ width: "40%" }}> */}
         <Grid item xs={12} sm={6} sx={leftSideStyle}>
           <div
             style={{
@@ -172,7 +127,14 @@ function EditWeek() {
                 size="medium"
                 onClick={() => {
                   if (category.trim() === "") {
-                    alert("Please enter the Category");
+                    toast.error("Please Enter the Category", {
+                      position: toast.POSITION.TOP_RIGHT,
+                      autoClose: 3000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                    });
                   } else {
                     setList([...list, category]);
                     setCategory("");
@@ -191,7 +153,6 @@ function EditWeek() {
                   display: "flex",
                   flexDirection: matches ? "row" : "column",
                   flexWrap: "wrap",
-                  // flex-wrap: wrap,
                   height: "70%",
                   width: "100%",
                   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
@@ -215,7 +176,6 @@ function EditWeek() {
                     <Stack alignItems={"center"} spacing={1}>
                       <Chip
                         label={item}
-                        onClick={handleClick}
                         onDelete={() => handleDelete(item)}
                         variant="outlined"
                       />
@@ -225,22 +185,12 @@ function EditWeek() {
               </Typography>
             ) : null}
 
-            {/* </Box> */}
-
             <Box
               sx={{
-                // width: "100%",
-
                 width: "100%",
                 display: "flex",
-                // flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
-
-                // height: "50px",
-                // boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-                // marginBottom: 2,
-                // display: "flex",
               }}
             >
               <Button
@@ -252,7 +202,6 @@ function EditWeek() {
                 variant="contained"
                 disableElevation
                 mb={2}
-                // onClick={handleApi}
                 disabled={loading}
               >
                 {loading && (

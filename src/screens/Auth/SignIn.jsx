@@ -11,7 +11,7 @@ import {
   useTheme,
 } from "@mui/material";
 import "@fontsource/lexend/400.css";
-import { Font } from 'google-fonts';
+import { Font } from "google-fonts";
 
 import React, { useState } from "react";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -22,6 +22,8 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState("true");
@@ -33,8 +35,6 @@ function SignIn() {
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const [loading, setLoading] = useState(false);
 
-  //  const theme = useTheme();
-  // const matches = useMediaQuery(theme.breakpoints.up("lg"));
   const handelEmail = (event) => {
     setEmail(event.target.value);
   };
@@ -43,7 +43,6 @@ function SignIn() {
   };
 
   const handleApi = () => {
-    console.log("signin", email, password);
     setLoading(true);
     axios
       .post("http://localhost:6464/api/login", {
@@ -54,10 +53,9 @@ function SignIn() {
         if (!response.data.success) {
           throw new Error(response.data.result);
         }
-  
+
         localStorage.setItem("token", response.data.token);
-  
-        console.log("hi", response.data);
+
         navigate("/");
       })
       .catch((error) => {
@@ -84,11 +82,9 @@ function SignIn() {
             draggable: true,
           });
         }
-        console.log("Error: ", error);
         setLoading(false);
       });
   };
-  
 
   const leftSideStyle = {
     backgroundColor: "white",
@@ -123,7 +119,6 @@ function SignIn() {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              // border: "2px solid black",
             }}
           >
             <Typography variant={matches ? "h3" : "h4"} color="black" mb={2}>
@@ -197,12 +192,6 @@ function SignIn() {
               SignIn
             </Button>
 
-            {/* <Box
-              sx={{
-                display: "flex",
-                // p: 2,
-              }}
-            > */}
             <Box>
               <Typography sx={{ marginTop: "10px" }}>
                 Don't have an account yet?:
@@ -246,7 +235,14 @@ function SignIn() {
                   justifyContent: "center",
                 }}
               >
-                <GoogleIcon />
+                <GoogleOAuthProvider clientId="962911055677-djnrn95cl6bbvs5h9ou7qqc4hrggs9fs.apps.googleusercontent.com">
+                  {/* <Google /> */}
+                  <GoogleLogin
+                    onSuccess={(credentialResponse) => {}}
+                    onError={() => {}}
+                  />
+                </GoogleOAuthProvider>
+                {/* <GoogleIcon /> */}
               </div>
               <div
                 style={{

@@ -9,8 +9,6 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
-// import { MenuIcon } from "@mui/icons-material/Menu";
-// import ManuIcon from @mui
 
 function Header() {
   return (
@@ -32,11 +30,7 @@ function Header() {
               component="div"
               sx={{ flexGrow: 1, display: "flex" }}
             >
-              <Link
-                style={{ color: "#FFF", textDecoration: "none" }}
-                // sx={{ color: "#FFF", textDecoration: "none" }}
-                to={"/"}
-              >
+              <Link style={{ color: "#FFF", textDecoration: "none" }} to={"/"}>
                 Header
               </Link>
             </Typography>

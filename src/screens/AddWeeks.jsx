@@ -12,14 +12,14 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AddWeeks() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [list, setList] = useState([]);
-  // const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
-  // const [loading, setLoading] = useState(false);
 
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
@@ -37,25 +37,23 @@ function AddWeeks() {
     borderRadius: "20px",
   };
 
-  const handleClick = () => {
-    console.info("You clicked the Chip.");
-    alert("click handel");
-  };
-
   const handleDelete = (currentItem) => {
-    console.log("currentItem", currentItem);
-
     const updatedList = list.filter((item) => item.name !== currentItem.name);
     setList(updatedList);
   };
 
   const handleKeyDown = (e) => {
-    console.log("list", list);
-
     if (e.key === "Enter") {
       e.preventDefault();
       if (category.trim() === "") {
-        alert("Please Enter the Category");
+        toast.error("Please Enter the Category", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       } else setList([...list, { name: category, completed: false }]);
       setCategory("");
     }
@@ -63,16 +61,6 @@ function AddWeeks() {
   const handleApi = () => {
     setLoading(true);
 
-    // if (name.trim() === "" || list.length === 0) {
-    //   // alert("hallo");
-    //   // <Alert variant="outlined" severity="error">
-    //   //   This is an error alert — check it out!
-    //   // </Alert>;
-    //   alert("complet all the filde");
-    //   // setShowAlert(true);
-    // } else {
-    //   setName("");
-    //   setList([]);
     var data = {
       name: name,
       items: list,
@@ -83,35 +71,45 @@ function AddWeeks() {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
-    console.log("data", data);
-    //    console.log('token', localStorage.getItem('token'))
-    // return
     axios
-      .post(
-        "http://localhost:6464/api/add-weeks",
-        data,
-        header
-        // {
-        //   name: name,
-        //   item: list,
-        // }
-      )
+      .post("http://localhost:6464/api/add-weeks", data, header)
       .then((response) => {
         if (!response.data.success) {
           throw new Error(response.data.msg);
         }
-        console.log(response);
-        // navigate("/sign-in");
-        alert("submitted");
+        toast.error("submitted", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         setLoading(false);
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.msg) {
-          alert(error.response.data.msg);
+          toast.error(error.response.data.msg, {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
         } else {
-          alert("An error occurred while registering. Please try again later.");
+          toast.error(
+            "An error occurred while registering. Please try again later.",
+            {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            }
+          );
         }
-        console.error("Error: ", error);
         setLoading(false);
       });
   };
@@ -133,7 +131,6 @@ function AddWeeks() {
           background: "linear-gradient(to right bottom,  #525252, #3d72b4)",
         }}
       >
-        {/* <Grid sx={{ width: "40%" }}> */}
         <Grid item xs={12} sm={6} sx={leftSideStyle}>
           <div
             style={{
@@ -182,12 +179,6 @@ function AddWeeks() {
                 onKeyDown={handleKeyDown}
               />
               <Button
-                // sx={{
-                //   width: "100%",
-                //   height: "50px",
-                //   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-                //   marginBottom: 2,
-                // }}
                 sx={{
                   marginLeft: matches ? 2 : 0,
                   width: matches ? "50%" : "100%",
@@ -198,14 +189,19 @@ function AddWeeks() {
                 size="medium"
                 onClick={() => {
                   if (category.trim() === "") {
-                    alert("Please enter the Category");
+                    toast.error("Please enter the Category", {
+                      position: toast.POSITION.TOP_RIGHT,
+                      autoClose: 3000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                    });
                   } else {
                     setList([...list, { name: category, completed: false }]);
                     setCategory("");
-                    console.log("history", list);
                   }
                 }}
-                // sx={{ m: 2 }}
                 variant="contained"
               >
                 Add
@@ -217,7 +213,6 @@ function AddWeeks() {
                   display: "flex",
                   flexDirection: matches ? "row" : "column",
                   flexWrap: "wrap",
-                  // flex-wrap: wrap,
                   height: "70%",
                   width: "100%",
                   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
@@ -241,7 +236,6 @@ function AddWeeks() {
                     <Stack alignItems={"center"} spacing={1}>
                       <Chip
                         label={item.name}
-                        onClick={handleClick}
                         onDelete={() => handleDelete(item)}
                         variant="outlined"
                       />
@@ -255,18 +249,10 @@ function AddWeeks() {
 
             <Box
               sx={{
-                // width: "100%",
-
                 width: "100%",
                 display: "flex",
-                // flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
-
-                // height: "50px",
-                // boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-                // marginBottom: 2,
-                // display: "flex",
               }}
             >
               <Button
@@ -279,7 +265,6 @@ function AddWeeks() {
                 disableElevation
                 mb={2}
                 onClick={handleApi}
-                // disabled={loading}
               >
                 {loading && (
                   <CircularProgress
@@ -303,17 +288,7 @@ function AddWeeks() {
                 disableElevation
                 mb={2}
                 onClick={handleReset}
-                // disabled={loading}
               >
-                {/* {loading && (
-                  <CircularProgress
-                    size={24}
-                    style={{
-                      color: "black",
-                      marginRight: "5px",
-                    }}
-                  />
-                )} */}
                 reset
               </Button>
             </Box>
