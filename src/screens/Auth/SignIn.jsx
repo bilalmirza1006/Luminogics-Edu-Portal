@@ -24,6 +24,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import useHistory from "react-router-dom";
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState("true");
@@ -41,7 +42,9 @@ function SignIn() {
   const handelPassword = (event) => {
     setPassword(event.target.value);
   };
+  // const history = useHistory();
 
+  // console.log("data", data);
   const handleApi = () => {
     setLoading(true);
     axios
@@ -53,10 +56,13 @@ function SignIn() {
         if (!response.data.success) {
           throw new Error(response.data.result);
         }
+        console.log("SignIn", response.data.user._id);
 
         localStorage.setItem("token", response.data.token);
+        // history.push(`/home?userId=${response.data.user._id}`);
+        navigate("/home", { state: { userId: response.data.user._id } });
 
-        navigate("/");
+        // navigate("/home");
       })
       .catch((error) => {
         if (
@@ -197,7 +203,7 @@ function SignIn() {
                 Don't have an account yet?:
               </Typography>
             </Box>
-            <Link to={"/sign-up"}> Signup.</Link>
+            <Link to={"/"}> Signup.</Link>
             {/* </Box> */}
 
             <Typography>or sign in with</Typography>

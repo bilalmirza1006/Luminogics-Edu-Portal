@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Box, Grid } from "@mui/material";
 import { Item } from "../constants/home";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 function Home() {
   const [data, setData] = useState([]);
+  console.log("homje", data);
+
+  const location = useLocation();
+  const userId = location.state && location.state.userId;
+
+  // console.log("id", userId);
+
   useEffect(() => {
     axios
       .get("http://localhost:6464/api/get-weeks", {
@@ -63,7 +70,7 @@ function Home() {
                   textDecoration: "none",
                 }}
                 to={`/week`}
-                state={{ data: week.items }}
+                state={{ data: week.items, userId: userId, weekId: week._id }}
               >
                 <Item
                   sx={{

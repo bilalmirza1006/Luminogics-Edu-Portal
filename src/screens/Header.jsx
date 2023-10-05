@@ -30,7 +30,10 @@ function Header() {
               component="div"
               sx={{ flexGrow: 1, display: "flex" }}
             >
-              <Link style={{ color: "#FFF", textDecoration: "none" }} to={"/"}>
+              <Link
+                style={{ color: "#FFF", textDecoration: "none" }}
+                to={"/home"}
+              >
                 Header
               </Link>
             </Typography>

@@ -72,6 +72,7 @@ function SignUp() {
         })
 
         .then((response) => {
+          console.log("SignIn", response);
           if (!response.data.success) {
             throw new Error(response.data.msg);
           } else {
@@ -88,6 +89,8 @@ function SignUp() {
           setLoading(false);
         })
         .catch((error) => {
+          console.log("SignIn", error);
+
           if (
             error.response &&
             error.response.data &&
@@ -102,6 +105,15 @@ function SignUp() {
               draggable: true,
             });
             setLoading(false);
+          } else if (error.response.data.result.message) {
+            toast.error(error.response.data.result.message, {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
           } else {
             toast.error(
               "An error occurred while registering. Please try again later.",

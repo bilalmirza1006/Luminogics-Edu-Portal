@@ -77,7 +77,7 @@ function AddWeeks() {
         if (!response.data.success) {
           throw new Error(response.data.msg);
         }
-        toast.error("submitted", {
+        toast.success("submitted", {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 3000,
           hideProgressBar: false,
