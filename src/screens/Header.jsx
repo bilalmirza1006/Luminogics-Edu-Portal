@@ -14,8 +14,11 @@ import { styled } from "@mui/material/styles";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { AppRoutes } from "../routs/RoutConstant";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const user = localStorage.removeItem("token-info");
+// const user = localStorage.removeItem("token-info");
 // console.log("user", user);
 function Header() {
   const logout = () => {
@@ -68,7 +71,7 @@ function Header() {
       // },
     },
   }));
-
+  const token = localStorage.getItem("token");
   // export default function CustomizedMenus() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -98,18 +101,20 @@ function Header() {
               component="div"
               sx={{ flexGrow: 1, display: "flex" }}
             >
-              <Link
-                style={{ color: "#FFF", textDecoration: "none" }}
-                to={"/home"}
-              >
-                Header
-              </Link>
+              {token && (
+                <Link
+                  style={{ color: "#FFF", textDecoration: "none" }}
+                  to={AppRoutes.HOME}
+                >
+                  Header
+                </Link>
+              )}
             </Typography>
 
             <Button color="inherit">
               <Link
                 style={{ color: "white", textDecoration: "none" }}
-                to={"/sign-in"}
+                to={AppRoutes.SIGNIN}
               >
                 {" "}
                 Login.
@@ -138,25 +143,40 @@ function Header() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose} disableRipple>
-                  <Link
-                    // onClick={logout}
-                    to={"/user-profile"}
-                    style={{ color: "black", textDecoration: "none" }}
-                  >
-                    Profile
-                  </Link>
+                  {token ? null : (
+                    <Link
+                      // onClick={logout}
+                      to={AppRoutes.USER_PROFILE}
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      Please Signin
+                    </Link>
+                  )}
                 </MenuItem>
-                <MenuItem onClick={handleClose} disableRipple>
-                  {/* <Button color="inherit" onClick={logout}> */}
-                  <Link
-                    onClick={logout}
-                    to={"/sign-in"}
-                    style={{ color: "black", textDecoration: "none" }}
-                  >
-                    Logout
-                  </Link>
-                  {/* </Button> */}
-                </MenuItem>
+                {token && (
+                  <MenuItem onClick={handleClose} disableRipple>
+                    <Link
+                      // onClick={logout}
+                      to={AppRoutes.USER_PROFILE}
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      Profile
+                    </Link>
+                  </MenuItem>
+                )}
+                {token && (
+                  <MenuItem onClick={handleClose} disableRipple>
+                    {/* <Button color="inherit" onClick={logout}> */}
+                    <Link
+                      onClick={logout}
+                      to={AppRoutes.SIGNIN}
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      Logout
+                    </Link>
+                    {/* </Button> */}
+                  </MenuItem>
+                )}
               </StyledMenu>
             </div>
             {/* <Button color="inherit" onClick={logout}>

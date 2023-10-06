@@ -3,6 +3,7 @@ import { Box, Grid } from "@mui/material";
 import { Item } from "../constants/home";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import { AppRoutes } from "../routs/RoutConstant";
 function Home() {
   const [data, setData] = useState([]);
   console.log("homje", data);
@@ -69,7 +70,7 @@ function Home() {
                   color: "black",
                   textDecoration: "none",
                 }}
-                to={`/week`}
+                to={AppRoutes.WEEK}
                 state={{ data: week.items, userId: userId, weekId: week._id }}
               >
                 <Item

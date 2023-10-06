@@ -20,6 +20,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../routs/RoutConstant";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState("true");
@@ -303,7 +304,7 @@ function SignUp() {
                 Have an account already?
               </Typography>
             </Box>
-            <Link to={"/sign-in"}> SignIn.</Link>
+            <Link to={AppRoutes.SIGNUP}> SignIn.</Link>
             {/* </Box> */}
 
             <Typography>or signUp with</Typography>

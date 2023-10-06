@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import useHistory from "react-router-dom";
+import { AppRoutes } from "../../routs/RoutConstant";
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState("true");
@@ -207,7 +208,7 @@ function SignIn() {
                 Don't have an account yet?:
               </Typography>
             </Box>
-            <Link to={"/"}> Signup.</Link>
+            <Link to={AppRoutes.SIGNUP}> Signup.</Link>
             {/* </Box> */}
 
             <Typography>or sign in with</Typography>
