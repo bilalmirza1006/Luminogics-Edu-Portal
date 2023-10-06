@@ -14,6 +14,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 function UserrProfile() {
   const [username, setUsername] = useState("");
@@ -22,6 +23,11 @@ function UserrProfile() {
 
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
+
+  // const location = useLocation();
+  // const userId = location.state && location.state.userId;
+  // const { userId } = props;
+  // console.log("userid", userId);
 
   const leftSideStyle = {
     backgroundColor: "white",

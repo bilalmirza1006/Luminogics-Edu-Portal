@@ -3,8 +3,9 @@ import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
+  Button,
   List,
   ListItem,
   ListItemIcon,
@@ -32,6 +33,21 @@ function App() {
     const completionPercentage = (updatedItems.length / newstate.length) * 100;
 
     setLoading(completionPercentage);
+  };
+  const navigate = useNavigate();
+
+  const deleteWeek = () => {
+    axios
+      .delete(`http://localhost:6464/api/delete-week/${state.weekId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        navigate("/home");
+
+        // navigate("/home");
+      });
   };
 
   const { state } = useLocation();
@@ -122,6 +138,30 @@ function App() {
           );
         })}
       </List>
+      <Box>
+        <Button
+          sx={{
+            width: "100%",
+            height: "50px",
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+          }}
+          variant="contained"
+          mb={2}
+          onClick={deleteWeek}
+          // disabled={loading}
+        >
+          {/* {loading && (
+            <CircularProgress
+              size={24}
+              style={{
+                color: "white",
+                marginRight: "5px",
+              }}
+            />
+          )} */}
+          Delete
+        </Button>
+      </Box>
     </Box>
   );
 }

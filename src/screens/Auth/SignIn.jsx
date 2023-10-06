@@ -35,6 +35,7 @@ function SignIn() {
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState("");
 
   const handelEmail = (event) => {
     setEmail(event.target.value);
@@ -57,10 +58,13 @@ function SignIn() {
           throw new Error(response.data.result);
         }
         console.log("SignIn", response.data.user._id);
-
+        // setUserId(response.data.user._id);
         localStorage.setItem("token", response.data.token);
-        // history.push(`/home?userId=${response.data.user._id}`);
-        navigate("/home", { state: { userId: response.data.user._id } });
+        // history.push("/home");
+        // history.push("/user-profile");
+        navigate("/home", {
+          state: { userId: response.data.user._id },
+        });
 
         // navigate("/home");
       })

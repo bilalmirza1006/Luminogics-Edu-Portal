@@ -11,6 +11,7 @@ import Week from './screens/Week';
 import DomyScreen from './screens/DomyScreen';
 import UserrProfile from './screens/UserrProfile';
 import EditProfile from './screens/EditProfile';
+import ResetPassword from './screens/ResetPassword';
 
 function App() {
   return (
@@ -26,8 +27,9 @@ function App() {
         <Route path="/week" element={<Week />} />
         <Route path="/add-week" element={<AddWeeks />} />
         <Route path="/edit-week" element={<EditWeek />} />
-        <Route path="/prfile" element={<UserrProfile />} />
-        <Route path="/eidt-prfile" element={<EditProfile />} />
+        <Route path="/user-profile" element={<UserrProfile />} />
+        <Route path="/eidt-profile" element={<EditProfile />} />
+        <Route path="/Reset-Password" element={<ResetPassword />} />
 
 
       </Routes>
