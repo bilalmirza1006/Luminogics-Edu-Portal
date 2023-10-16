@@ -22,13 +22,15 @@ import "react-toastify/dist/ReactToastify.css";
 // console.log("user", user);
 function Header() {
   const logout = () => {
-    // localStorage.removeItem("token");
-    // setToken(null);
     localStorage.clear();
-
-    // setIsLoggedin(false);
-    // set;
-    console.log("halo");
+    toast.success("You have been successfully logged out!", {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
   };
 
   const StyledMenu = styled((props) => (
@@ -81,7 +83,8 @@ function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const username = localStorage.getItem("username");
+  console.log("username", username);
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -111,15 +114,17 @@ function Header() {
               )}
             </Typography>
 
-            <Button color="inherit">
-              <Link
-                style={{ color: "white", textDecoration: "none" }}
-                to={AppRoutes.SIGNIN}
-              >
-                {" "}
-                Login.
-              </Link>
-            </Button>
+            {!token && (
+              <Button color="inherit">
+                <Link
+                  style={{ color: "white", textDecoration: "none" }}
+                  to={AppRoutes.SIGNIN}
+                >
+                  {" "}
+                  Login.
+                </Link>
+              </Button>
+            )}
             <div>
               <Button
                 id="demo-customized-button"
@@ -131,7 +136,7 @@ function Header() {
                 onClick={handleClick}
                 endIcon={<KeyboardArrowDownIcon />}
               >
-                Options
+                {username}
               </Button>
               <StyledMenu
                 // id="demo-customized-menu"
@@ -154,28 +159,37 @@ function Header() {
                   )}
                 </MenuItem>
                 {token && (
-                  <MenuItem onClick={handleClose} disableRipple>
-                    <Link
-                      // onClick={logout}
-                      to={AppRoutes.USER_PROFILE}
-                      style={{ color: "black", textDecoration: "none" }}
-                    >
+                  <Link
+                    // onClick={logout}
+                    to={AppRoutes.USER_PROFILE}
+                    style={{ color: "black", textDecoration: "none" }}
+                  >
+                    <MenuItem onClick={handleClose} disableRipple>
                       Profile
-                    </Link>
-                  </MenuItem>
+                    </MenuItem>
+                  </Link>
                 )}
                 {token && (
-                  <MenuItem onClick={handleClose} disableRipple>
-                    {/* <Button color="inherit" onClick={logout}> */}
-                    <Link
-                      onClick={logout}
-                      to={AppRoutes.SIGNIN}
-                      style={{ color: "black", textDecoration: "none" }}
-                    >
+                  <Link
+                    // onClick={logout}
+                    to={AppRoutes.RESET_PASSWORD}
+                    style={{ color: "black", textDecoration: "none" }}
+                  >
+                    <MenuItem onClick={handleClose} disableRipple>
+                      Chang Password
+                    </MenuItem>
+                  </Link>
+                )}
+                {token && (
+                  <Link
+                    onClick={logout}
+                    to={AppRoutes.SIGNIN}
+                    style={{ color: "black", textDecoration: "none" }}
+                  >
+                    <MenuItem onClick={handleClose} disableRipple>
                       Logout
-                    </Link>
-                    {/* </Button> */}
-                  </MenuItem>
+                    </MenuItem>
+                  </Link>
                 )}
               </StyledMenu>
             </div>

@@ -13,6 +13,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { useLocation } from "react-router-dom";
+
 function EditWeek() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
@@ -29,7 +31,7 @@ function EditWeek() {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: matches ? "80%" : "70%",
+    height: matches ? "80vh" : "70vh", // Corrected the height units
     border: "2px solid black",
     width: matches ? "50%" : "80%",
     borderRadius: "20px",
@@ -52,23 +54,26 @@ function EditWeek() {
           pauseOnHover: true,
           draggable: true,
         });
-      } else setList([...list, category]);
-      setCategory("");
+      } else {
+        setList([...list, category]);
+        setCategory("");
+      }
     }
   };
 
-  //
   const handleReset = () => {
     setList([]);
     setName("");
   };
 
+  const { state } = useLocation();
+  const newstate = state?.weekItems || [];
+
   return (
     <div>
       <Box
         sx={{
-          minWidth: "100%",
-          minHeight: "100vh",
+          minHeight: "100vh", // Corrected the height units
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -100,7 +105,6 @@ function EditWeek() {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            {/* <Box> */}
             <Box sx={{ display: "flex", width: "100%" }}>
               <TextField
                 sx={{
@@ -109,7 +113,7 @@ function EditWeek() {
                   marginBottom: "15px",
                 }}
                 id="outlined-basic"
-                label="category"
+                label="Category" // Corrected the label text
                 variant="outlined"
                 disabled={loading}
                 value={category}
@@ -119,8 +123,6 @@ function EditWeek() {
               <Button
                 sx={{
                   marginLeft: 2,
-                  // width: "100%",
-                  // height: "100vh",
                   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
                   marginBottom: 2,
                 }}
@@ -138,16 +140,14 @@ function EditWeek() {
                   } else {
                     setList([...list, category]);
                     setCategory("");
-                    console.log("history", list);
                   }
                 }}
-                // sx={{ m: 2 }}
                 variant="contained"
               >
                 Add
               </Button>
             </Box>
-            {list.length > 0 ? (
+            {list.length > 0 && (
               <Typography
                 sx={{
                   display: "flex",
@@ -164,7 +164,7 @@ function EditWeek() {
                 }}
                 disabled={loading}
               >
-                {list.map((item, i) => (
+                {newstate.map((item, i) => (
                   <Typography
                     key={item}
                     value={item}
@@ -183,7 +183,7 @@ function EditWeek() {
                   </Typography>
                 ))}
               </Typography>
-            ) : null}
+            )}
 
             <Box
               sx={{

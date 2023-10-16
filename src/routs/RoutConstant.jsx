@@ -8,6 +8,8 @@ export const AppRoutes = {
   USER_PROFILE: "/user-profile",
   EDIT_PROFILE: "/eidt-profile",
   RESET_PASSWORD: "/Reset-Password",
+  FORGET_PASSWORD: "/forget-password",
+  OTP: "/otp",
 
   // SIGNUP_ROUTE: "/signup",
   // HOMEPAGE_ROUTE: "/homepage",

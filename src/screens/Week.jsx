@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   List,
@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AppRoutes } from "../routs/RoutConstant";
 
 function App() {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -36,7 +37,7 @@ function App() {
   };
   const navigate = useNavigate();
 
-  const deleteWeek = () => {
+  const deleteWeekHandel = () => {
     axios
       .delete(`http://localhost:6464/api/delete-week/${state.weekId}`, {
         headers: {
@@ -44,14 +45,35 @@ function App() {
         },
       })
       .then((response) => {
+        // console.log("home", response.data.message);
+        toast.success(response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         navigate("/home");
 
         // navigate("/home");
+      })
+      .catch((err) => {
+        toast.error(err, {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       });
   };
 
   const { state } = useLocation();
   const newstate = state?.data;
+
+  console.log("weekname", state.weekName);
   const weekItemUpdateApi = (itemsId) => {
     axios
       .put(
@@ -74,12 +96,32 @@ function App() {
   };
 
   return (
-    <Box sx={{ margin: "20px" }}>
-      <Typography variant={matches ? "h3" : "h4"} sx={{ display: "flex" }}>
-        List of Items
-      </Typography>
+    <Box
+      sx={{
+        // margin: "20px",
+        paddingTop: "20px",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        // backgroundColor: "red",
+      }}
+    >
+      <Box sx={{ display: "flex", width: "97%" }}>
+        <Typography variant={matches ? "h3" : "h4"} sx={{ display: "flex" }}>
+          List of Items
+        </Typography>
+      </Box>
       {loading >= 0 && (
-        <Box sx={{ display: "flex", alignItems: "center", marginTop: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: 2,
+            width: "97%",
+          }}
+        >
           <Typography variant="h5" sx={{ marginRight: "8px" }}>
             {loading === 100 ? "Completed" : `${loading.toFixed(2)}%`}
           </Typography>
@@ -94,60 +136,70 @@ function App() {
           />
         </Box>
       )}
-
-      <List>
+      <List sx={{ display: "flex", flexDirection: "column", width: "97%" }}>
         {newstate.map((weekItem, index) => {
-          // console.log("wjeekl", weekItem._id);
           return (
-            <ListItem
-              key={index}
-              disablePadding
-              onClick={() => handleItemCheck(index)}
-              sx={{
-                border: "2px solid gray",
-                marginBottom: "4px",
-                borderRadius: "100px",
-              }}
-            >
-              <ListItemIcon>
-                <Checkbox
-                  checked={selectedItems.includes(index)}
-                  onChange={() => {
-                    // console.log("hoho");
-                    handleItemCheck(index);
-                  }}
+            <Box sx={{ display: "flex", width: "100%" }}>
+              <ListItem
+                key={index}
+                disablePadding
+                onClick={() => handleItemCheck(index)}
+                sx={{
+                  border: "2px solid gray",
+                  marginBottom: "4px",
+                  borderRadius: "100px",
+                }}
+              >
+                <ListItemIcon>
+                  <Checkbox
+                    checked={selectedItems.includes(index)}
+                    onChange={() => {
+                      handleItemCheck(index);
+                    }}
+                    onClick={() => {
+                      weekItemUpdateApi(weekItem._id);
+                    }}
+                  />
+                </ListItemIcon>
+                <ListItemText
                   onClick={() => {
                     weekItemUpdateApi(weekItem._id);
                   }}
+                  primary={weekItem.name}
+                  primaryTypographyProps={{
+                    variant: "h5",
+                    sx: {
+                      textDecoration: selectedItems.includes(index)
+                        ? "line-through"
+                        : "none",
+                      color: "gray",
+                    },
+                  }}
                 />
-              </ListItemIcon>
-              <ListItemText
-                primary={weekItem.name}
-                // onClick={handelApi}
-                primaryTypographyProps={{
-                  variant: "h5",
-                  sx: {
-                    textDecoration: selectedItems.includes(index)
-                      ? "line-through"
-                      : "none",
-                    color: "gray",
-                  },
-                }}
-              />
-            </ListItem>
+              </ListItem>
+            </Box>
           );
         })}
       </List>
-      <Box>
+      <Box
+        sx={{
+          display: "flex",
+          width: "25%",
+          alignItems: "center",
+          justifyContent: "center",
+          // backgroundColor: "red",
+        }}
+      >
         <Button
           sx={{
-            width: "100%",
+            width: "50px",
             height: "50px",
+            m: 2,
             boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
           }}
           variant="contained"
-          mb={2}
-          onClick={deleteWeek}
+          // mb={2}
+          onClick={deleteWeekHandel}
           // disabled={loading}
         >
           {/* {loading && (
@@ -160,6 +212,26 @@ function App() {
             />
           )} */}
           Delete
+        </Button>
+        <Button
+          sx={{
+            width: "50px",
+            height: "50px",
+            m: 2,
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+          }}
+          variant="contained"
+          // mb={2}
+          // onClick={deleteWeekHandel}
+          // disabled={loading}
+        >
+          <Link
+            to={AppRoutes.EDIT_WEEK}
+            state={{ weekItems: newstate, weekName: state.weekName }}
+            style={{ cursor: "pointer", textDecoration: "underline" }}
+          >
+            edit
+          </Link>
         </Button>
       </Box>
     </Box>

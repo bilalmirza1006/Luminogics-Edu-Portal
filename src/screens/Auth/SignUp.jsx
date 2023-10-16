@@ -21,6 +21,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../routs/RoutConstant";
+// import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState("true");
@@ -237,7 +239,7 @@ function SignUp() {
                 width: "100%",
                 boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
               }}
-              id="outlined-password-input"
+              id="outlined-password-input1"
               label="Password"
               variant="filled"
               disabled={loading}
@@ -304,7 +306,7 @@ function SignUp() {
                 Have an account already?
               </Typography>
             </Box>
-            <Link to={AppRoutes.SIGNUP}> SignIn.</Link>
+            <Link to={AppRoutes.SIGNIN}> SignIn.</Link>
             {/* </Box> */}
 
             <Typography>or signUp with</Typography>
@@ -314,50 +316,13 @@ function SignUp() {
                 marginTop: "1rem",
               }}
             >
-              <div
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 100,
-                  backgroundColor: "#0A66C2",
-                  display: "flex",
-                  alignItems: "center",
-                  margin: "4px",
-
-                  justifyContent: "center",
-                }}
-              >
-                <LinkedInIcon />
-              </div>
-              <div
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 100,
-                  backgroundColor: "#EA4335",
-                  display: "flex",
-                  alignItems: "center",
-                  margin: "4px",
-
-                  justifyContent: "center",
-                }}
-              >
-                <GoogleIcon />
-              </div>
-              <div
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 100,
-                  backgroundColor: "#93ccea",
-                  display: "flex",
-                  alignItems: "center",
-                  margin: "4px",
-
-                  justifyContent: "center",
-                }}
-              >
-                <FacebookIcon />
+              <div>
+                <GoogleOAuthProvider clientId="962911055677-djnrn95cl6bbvs5h9ou7qqc4hrggs9fs.apps.googleusercontent.com">
+                  <GoogleLogin
+                    onSuccess={(credentialResponse) => {}}
+                    onError={() => {}}
+                  />
+                </GoogleOAuthProvider>
               </div>
             </Box>
           </div>

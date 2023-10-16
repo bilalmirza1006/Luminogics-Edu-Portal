@@ -53,25 +53,13 @@ function ResetPassword() {
   const handelConfirmPassword = (event) => {
     setConfirmPassword(event.target.value);
   };
+  const handelCurrentPassword = (event) => {
+    setCurrentPassword(event.target.value);
+  };
 
   const validation = () => confirmPassword === newpassword;
 
-  // const token = localStorage.getItem("token");
-  // const token = localStorage.getItem("token");
   const token = localStorage.getItem("token");
-  // try {
-  //   const decodedToken = jwt_decode(token);
-  //   if (decodedToken.exp < Date.now() / 1000) {
-  //     console.log("Token has expired.");
-  //   } else {
-  //     const userId = decodedToken.sub;
-  //     console.log("User ID:", userId);
-  //   }
-  // } catch (error) {
-  //   console.error("Error decoding JWT:", error);
-  // }
-
-  // const token = "eyJ0eXAiO.../// jwt token";
   const decoded = jwt_decode(token);
   console.log("decode", decoded.userId);
 
@@ -116,15 +104,33 @@ function ResetPassword() {
             </Typography>
             <TextField
               sx={{
+                // m: 2,
                 width: "100%",
                 boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-                // marginBottom: "15px",
               }}
+              id="outlined-password-input"
               label="Current Password"
-              variant="outlined"
-              // disabled={loading}
+              variant="outlined" // disabled={loading}
               value={currentpassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
+              onChange={handelCurrentPassword}
+              autoComplete="current-password"
+              type={showPassword ? "password" : "text"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                    >
+                      {showPassword ? (
+                        <VisibilityOffIcon />
+                      ) : (
+                        <VisibilityIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <TextField
               sx={{

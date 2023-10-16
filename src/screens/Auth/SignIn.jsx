@@ -11,20 +11,20 @@ import {
   useTheme,
 } from "@mui/material";
 import "@fontsource/lexend/400.css";
-import { Font } from "google-fonts";
+// import { Font } from "google-fonts";
 
 import React, { useState } from "react";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GoogleIcon from "@mui/icons-material/Google";
+// import FacebookIcon from "@mui/icons-material/Facebook";
+// import GoogleIcon from "@mui/icons-material/Google";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
+// import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import useHistory from "react-router-dom";
+// import useHistory from "react-router-dom";
 import { AppRoutes } from "../../routs/RoutConstant";
 
 function SignIn() {
@@ -61,6 +61,8 @@ function SignIn() {
         console.log("SignIn", response.data.user._id);
         // setUserId(response.data.user._id);
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("username", response.data.user.name);
+        localStorage.setItem("email", response.data.user.email);
         // history.push("/home");
         // history.push("/user-profile");
         navigate("/home", {
@@ -163,6 +165,16 @@ function SignIn() {
               onChange={handelPassword}
               autoComplete="current-password"
               type={showPassword ? "password" : "text"}
+              helperText={
+                <Typography>
+                  <Link
+                    to={AppRoutes.FORGET_PASSWORD}
+                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  >
+                    Forgot Password?
+                  </Link>
+                </Typography>
+              }
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -180,6 +192,7 @@ function SignIn() {
                 ),
               }}
             />
+
             <Button
               sx={{
                 width: "100%",
@@ -209,7 +222,6 @@ function SignIn() {
               </Typography>
             </Box>
             <Link to={AppRoutes.SIGNUP}> Signup.</Link>
-            {/* </Box> */}
 
             <Typography>or sign in with</Typography>
             <Box
@@ -218,57 +230,13 @@ function SignIn() {
                 marginTop: "1rem",
               }}
             >
-              <div
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 100,
-                  backgroundColor: "#0A66C2",
-                  display: "flex",
-                  alignItems: "center",
-                  margin: "4px",
-
-                  justifyContent: "center",
-                }}
-              >
-                <LinkedInIcon />
-              </div>
-              <div
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 100,
-                  backgroundColor: "#EA4335",
-                  display: "flex",
-                  alignItems: "center",
-                  margin: "4px",
-
-                  justifyContent: "center",
-                }}
-              >
+              <div>
                 <GoogleOAuthProvider clientId="962911055677-djnrn95cl6bbvs5h9ou7qqc4hrggs9fs.apps.googleusercontent.com">
-                  {/* <Google /> */}
                   <GoogleLogin
                     onSuccess={(credentialResponse) => {}}
                     onError={() => {}}
                   />
                 </GoogleOAuthProvider>
-                {/* <GoogleIcon /> */}
-              </div>
-              <div
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 100,
-                  backgroundColor: "#93ccea",
-                  display: "flex",
-                  alignItems: "center",
-                  margin: "4px",
-
-                  justifyContent: "center",
-                }}
-              >
-                <FacebookIcon />
               </div>
             </Box>
           </div>

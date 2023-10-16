@@ -14,7 +14,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { AppRoutes } from "../routs/RoutConstant";
 
 function UserrProfile() {
   const [username, setUsername] = useState("");
@@ -24,6 +25,9 @@ function UserrProfile() {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
+  const localStorageUserName = localStorage.getItem("username");
+  const localStorageEmail = localStorage.getItem("email");
+  // console.log("username", userName);
   // const location = useLocation();
   // const userId = location.state && location.state.userId;
   // const { userId } = props;
@@ -77,7 +81,7 @@ function UserrProfile() {
                 label="User Name"
                 variant="outlined"
                 disabled={loading}
-                value={username}
+                value={localStorageUserName}
                 onChange={(e) => setUsername(e.target.value)}
               />
               <TextField
@@ -88,8 +92,9 @@ function UserrProfile() {
                 }}
                 label="User Email"
                 variant="outlined"
-                disabled={loading}
-                value={email}
+                // disabled={disabled}
+                disabled={true}
+                value={localStorageEmail}
               />
 
               <Box
@@ -110,7 +115,6 @@ function UserrProfile() {
                   variant="contained"
                   disableElevation
                   mb={2}
-                  // onClick={handleReset}
                   disabled={loading}
                 >
                   {loading && (
@@ -122,7 +126,12 @@ function UserrProfile() {
                       }}
                     />
                   )}
-                  Edit Profile
+                  <Link
+                    style={{ color: "white", textDecoration: "none" }}
+                    to={AppRoutes.EDIT_PROFILE}
+                  >
+                    Edit Profile
+                  </Link>
                 </Button>
               </Box>
             </div>
